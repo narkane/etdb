@@ -3,6 +3,7 @@ const session = require("express-session");
 const massive = require("massive");
 const bodyParser = require("body-parser");
 const ac = require("./controllers/authController");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 var cors = require("cors");
 
@@ -20,6 +21,7 @@ massive(CONNECTION_STRING).then(db => {
   console.log("db connected");
 });
 
+app.use(cookieParser());
 app.use(
   session({
     resave: true,
@@ -29,7 +31,11 @@ app.use(
 );
 
 //app.get("/devpool", ac.listDPTeams);
-//app.get("/devpool/members", ac.listDPMembers);
+app.get("/devpool/members", ac.listDPMembers);
+app.get("/", function(req, res) {
+  res.cookie("name", "express").send("cookie set"); //Sets name = express
+});
+
 app.get("/logout", ac.logout);
 app.post("/login", ac.login);
 app.post("/register", ac.register);

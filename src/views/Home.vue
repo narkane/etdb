@@ -1,18 +1,35 @@
 <template>
-  <div>
+  <v-layout row justify-end="true">
     <Login/>
-    <Delete/>
-  </div>
+    <Members/>
+
+    <v-layout column align-end>
+      <!-- <v-layout column> -->
+      <Profile id="profile"/>
+      <!-- </v-layout> -->
+    </v-layout>
+    <!-- </v-card> -->
+  </v-layout>
 </template>
 
 <script>
 import Login from "../components/Login";
-import Delete from "../components/Delete";
+import Profile from "../components/Profile";
+import Members from "../components/Members";
 
 export default {
   components: {
     Login,
-    Delete
+    Profile,
+    Members
   }
 };
 </script>
+
+<style scoped>
+#profile {
+  /* border: 2px outset gray; */
+  /* height: 100px; */
+  width: 300px;
+}
+</style>

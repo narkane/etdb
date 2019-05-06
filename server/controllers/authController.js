@@ -1,5 +1,7 @@
 const bcrypt = require("bcryptjs");
 
+var ssn;
+
 const register = async (req, res) => {
   const db = req.app.get("db");
 
@@ -11,6 +13,7 @@ const register = async (req, res) => {
     const hash = await bcrypt.hash(req.body.password, 12);
     let registereduser = await db.register_user([req.body.username, hash]);
     const user = registereduser[0];
+
     req.session.user = {
       username: user.username
     };
@@ -21,14 +24,40 @@ const register = async (req, res) => {
 const edit = async (req, res) => {
   const db = req.app.get("db");
 
-  const user = await db.get_user([req.body.username]);
-  const existinguser = user[0];
-  if (!existinguser) {
-    db.change_name([req.session.user.username, req.body.username]);
-    req.session.user = {
-      username: req.body.username
-    };
-    return res.status(200).json(req.session.user);
+  console.log(req.session);
+
+  // console.log(await db.get_user([req.body.username]));
+
+  if (!(await db.get_user([req.body.newName]))[0]) {
+    try {
+      // check password
+      const finduser = await db.get_user([req.body.oldName]);
+      const user = finduser[0];
+
+      if (!user) {
+        res
+          .status(401)
+          .json(
+            "User not found. Please register as a new user before logging in."
+          );
+      } else {
+        const isAuthenticated = bcrypt.compareSync(
+          req.body.password,
+          user.hash
+        );
+        if (!isAuthenticated) {
+          res.status(403).json("Incorrect username or password");
+        } else {
+          db.change_name([req.body.oldName, req.body.newName]);
+          req.session.user = {
+            username: req.body.newName
+          };
+          return res.status(200).json(req.session.user);
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
   } else {
     return res.status(409).json("OMG that name EXISTS... DUH-amn");
     // const hash = await bcrypt.hash(req.body.password, 12);
@@ -42,8 +71,8 @@ const edit = async (req, res) => {
 const login = async (req, res) => {
   const db = req.app.get("db");
 
-  if (!req.body.username && req.session.user.username) {
-    req.body.username = req.session.user.username;
+  if (!req.body.username && req.session.username) {
+    req.body.username = req.session.username;
   }
   const finduser = await db.get_user([req.body.username]);
   const user = finduser[0];
@@ -57,15 +86,16 @@ const login = async (req, res) => {
     if (!isAuthenticated) {
       res.status(403).json("Incorrect username or password");
     } else {
-      req.session.user = {
-        isAdmin: user.is_admin,
-        id: user.id,
-        username: user.username
-        // picture: user.picture,
-        // name: user.name,
-        // requested: user.amount_requested,
-        // received: user.amount_received
-      };
+      // req.session.user = {
+      // isAdmin: user.is_admin,
+      // id: user.id,
+      req.session.username = user.username;
+      // picture: user.picture,
+      // name: user.name,
+      // requested: user.amount_requested,
+      // received: user.amount_received
+      // };
+      console.log(req.session);
       // console.log("YOU DID IT! LOGIN!");
       // console.log(finduser[0]);
       res.status(200).json(req.session.user);
@@ -116,18 +146,16 @@ const adminOnly = (req, res) => {
 const removeUser = async (req, res) => {
   const db = req.app.get("db");
 
-  const user = await db.get_user([req.session.user.username]);
+  const user = await db.get_user([req.session.username]);
   const existinguser = user[0];
   if (existinguser) {
-    console.log(existinguser + " | " + req.session.user.username);
-    db.delete_user([req.session.user.username]);
+    console.log(existinguser + " | " + req.session.username);
+    db.delete_user([req.session.username]);
     req.session.destroy();
     return res.status(200).json("User deleted!");
   } else {
-    console.log(existinguser + " |FAIL| " + req.session.user.username);
-    return res
-      .status(409)
-      .json("User doesn't exist? " + req.session.user.username);
+    console.log(existinguser + " |FAIL| " + req.session.username);
+    return res.status(409).json("User doesn't exist? " + req.session.username);
   }
 };
 

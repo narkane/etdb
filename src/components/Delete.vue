@@ -1,9 +1,7 @@
 <template>
-  <v-layout row justify-left>
     <!-- <template v-slot:activator="{ on }"> -->
     <v-btn color="red darken-1" @click="deleteAccount()">Delete Account!</v-btn>
     <!-- </template> -->
-  </v-layout>
 </template>
 
 <script>
