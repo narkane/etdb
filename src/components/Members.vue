@@ -1,11 +1,12 @@
 <template>
   <v-layout row>
-    <v-flex xs12 sm6 offset-sm3>
+    <v-flex>
+      <!-- xs12 sm6 offset-sm1> -->
       <v-card>
         <v-toolbar color="light-blue" dark>
           <v-toolbar-side-icon></v-toolbar-side-icon>
 
-          <v-toolbar-title>My files</v-toolbar-title>
+          <v-toolbar-title>Members</v-toolbar-title>
 
           <v-spacer></v-spacer>
 
@@ -19,16 +20,15 @@
         </v-toolbar>
 
         <v-list two-line subheader>
-          <v-subheader inset>Folders</v-subheader>
-          {{members && members}}
-          <v-list-tile v-for="item in items" :key="item.title" avatar @click>
+          <v-subheader inset>Member Raw Data</v-subheader>
+          <v-list-tile v-for="member in members" :key="member.team_user" avatar @click>
             <v-list-tile-avatar>
-              <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
+              <v-icon :class="[iconClass]">{{ "call_to_action" }}</v-icon>
             </v-list-tile-avatar>
 
             <v-list-tile-content>
-              <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-              <v-list-tile-sub-title>{{ item.subtitle }}</v-list-tile-sub-title>
+              <v-list-tile-title>{{ member.team_user }} - {{member.team_name}}</v-list-tile-title>
+              <v-list-tile-sub-title>{{ member.team_desc }}</v-list-tile-sub-title>
             </v-list-tile-content>
 
             <v-list-tile-action>
@@ -42,9 +42,9 @@
 
           <v-subheader inset>Files</v-subheader>
 
-          <v-list-tile v-for="item in items2" :key="item.title" avatar @click>
+          <!-- <v-list-tile v-for="item in items2" :key="item.title" avatar @click>
             <v-list-tile-avatar>
-              <v-icon :class="[item.iconClass]">{{ item.icon }}</v-icon>
+              <v-icon :class="[iconClass]">{{ "call_to_action" }}</v-icon>
             </v-list-tile-avatar>
 
             <v-list-tile-content>
@@ -57,7 +57,7 @@
                 <v-icon color="grey lighten-1">info</v-icon>
               </v-btn>
             </v-list-tile-action>
-          </v-list-tile>
+          </v-list-tile>-->
         </v-list>
       </v-card>
     </v-flex>
@@ -73,6 +73,7 @@ export default {
     return {
       members: null,
       membersRet: null,
+      iconClass: "grey lighten-1 white--text",
       items: [
         {
           icon: "folder",
@@ -119,25 +120,14 @@ export default {
         .then(resp => {
           if (resp.status == 200) {
             this.members = resp.data;
-            alert(this.members);
             console.log(this.members);
             this.members.map((el, index) => {
               let tn = el.team_name;
               //selected team
               //   if (tn == sTeam) {
               if (tn) {
-                alert(retTotal);
                 retTotal.push(
-                  <div
-                    key={index}
-                    // style={{
-                    //   background: `rgba(${(Math.pow(el.team_user.length, 2) %
-                    //     25) *
-                    //     10}, ${(Math.pow(el.team_user.length, 2) *
-                    //     el.team_user.charCodeAt(0)) %
-                    //     256}, ${el.team_user.length * 15}, 0.5`
-                    // }}
-                  >
+                  <div key={index}>
                     <div id="dev-lead">{el.team_user}</div>
                   </div>
                 );
@@ -153,10 +143,8 @@ export default {
           }
         })
         .catch(e => {
-          console.log("dog");
-          console.log("dog");
-          console.log("dog");
-          console.log(e.status);
+          console.log("error");
+          console.log(e);
         });
       // this.forceUpdate();
     }

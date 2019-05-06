@@ -1,7 +1,7 @@
 <template>
-  <v-layout row justify-end="true">
+  <v-layout>
     <Login/>
-    <Members/>
+    <Members id="memberWindow"/>
 
     <v-layout column align-end>
       <!-- <v-layout column> -->
@@ -27,6 +27,11 @@ export default {
 </script>
 
 <style scoped>
+#memberWindow {
+  margin: 20px;
+  width: 70%;
+  box-shadow: 2px 2px 10px gray;
+}
 #profile {
   /* border: 2px outset gray; */
   /* height: 100px; */
