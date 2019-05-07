@@ -17,7 +17,7 @@ export default {
   }),
   methods: {
     deleteAccount: function() {
-      axios.delete("/delete").then(resp => {
+      axios.delete("http://sdc.thummel.site:3004/delete").then(resp => {
         alert(resp.data);
         console.log(resp);
         if (resp.status == 200) {
@@ -28,7 +28,7 @@ export default {
       });
     },
     logout: function() {
-      axios.get("/logout").then(resp => {
+      axios.get("http://sdc.thummel.site:3004/logout").then(resp => {
         alert(resp.data);
         console.log(resp);
         if (resp.status == 200) {

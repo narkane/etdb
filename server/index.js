@@ -14,7 +14,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
-// app.use(express.static(`${__dirname}/../build`));
+app.use(express.static(`${__dirname}/../build`));
 
 massive(CONNECTION_STRING).then(db => {
   app.set("db", db);
@@ -44,5 +44,5 @@ app.delete("/delete", ac.removeUser);
 
 // app.post("/db/join_team", ac.joinDPTeam);
 
-const PORT = process.env.PORT || 3004;
+const PORT = 3004;
 app.listen(PORT, () => console.log(` - Listening on port (${PORT}) - `));

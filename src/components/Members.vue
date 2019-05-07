@@ -116,7 +116,7 @@ export default {
       let ret;
 
       axios
-        .get("/devpool/members")
+        .get("http://sdc.thummel.site:3004/devpool/members")
         .then(resp => {
           if (resp.status == 200) {
             this.members = resp.data;

@@ -47,7 +47,7 @@ export default {
       // close modal
 
       axios
-        .post("/login", {
+        .post("http://sdc.thummel.site:3004/login", {
           username: this.user.name,
           password: this.user.pass
         })

@@ -62,7 +62,7 @@ export default {
   methods: {
     changeName: function() {
       axios
-        .put("/change_name", {
+        .put("http://sdc.thummel.site:3004/change_name", {
           newName: this.newName,
           oldName: this.user.name,
           password: this.user.pass

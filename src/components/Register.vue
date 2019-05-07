@@ -82,7 +82,7 @@ export default {
   methods: {
     register: function() {
       axios
-        .post("/register", {
+        .post("http://sdc.thummel.site:3004/register", {
           username: this.user.name,
           password: this.user.pass
         })
