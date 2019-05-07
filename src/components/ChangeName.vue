@@ -62,7 +62,7 @@ export default {
   methods: {
     changeName: function() {
       axios
-        .put("http://localhost:3004/change_name", {
+        .put("/change_name", {
           newName: this.newName,
           oldName: this.user.name,
           password: this.user.pass

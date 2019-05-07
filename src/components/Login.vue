@@ -47,7 +47,7 @@ export default {
       // close modal
 
       axios
-        .post("http://localhost:3004/login", {
+        .post("/login", {
           username: this.user.name,
           password: this.user.pass
         })

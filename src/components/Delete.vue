@@ -17,7 +17,7 @@ export default {
   }),
   methods: {
     deleteAccount: function() {
-      axios.delete("http://localhost:3004/delete").then(resp => {
+      axios.delete("/delete").then(resp => {
         alert(resp.data);
         console.log(resp);
         if (resp.status == 200) {

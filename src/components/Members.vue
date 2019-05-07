@@ -116,7 +116,7 @@ export default {
       let ret;
 
       axios
-        .get("http://localhost:3004/devpool/members")
+        .get("/devpool/members")
         .then(resp => {
           if (resp.status == 200) {
             this.members = resp.data;
