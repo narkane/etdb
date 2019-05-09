@@ -30,7 +30,7 @@ app.use(
   })
 );
 
-//app.get("/devpool", ac.listDPTeams);
+app.get("/devpool", ac.listDPTeams);
 app.get("/devpool/members", ac.listDPMembers);
 app.get("/", function(req, res) {
   res.cookie("name", "express").send("cookie set"); //Sets name = express
@@ -42,7 +42,7 @@ app.post("/register", ac.register);
 app.put("/change_name", ac.edit);
 app.delete("/delete", ac.removeUser);
 
-// app.post("/db/join_team", ac.joinDPTeam);
+app.post("/db/join_team", ac.joinDPTeam);
 
 const PORT = 3004;
 app.listen(PORT, () => console.log(` - Listening on port (${PORT}) - `));
