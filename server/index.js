@@ -25,7 +25,7 @@ app.use(cookieParser());
 app.use(
   session({
     key: "user_sid",
-    resave: true,
+    resave: false,
     saveUninitialized: false,
     secret: SESSION_SECRET,
     cookie: {
@@ -60,9 +60,9 @@ app.get("/", sessionChecker, (req, res) => {
 
 app.get("/devpool", ac.listDPTeams);
 app.get("/devpool/members", ac.listDPMembers);
-app.get("/", function(req, res) {
-  res.cookie("name", "express").send("cookie set"); //Sets name = express
-});
+// app.get("/", function(req, res) {
+//   res.cookie("name", "express").send("cookie set"); //Sets name = express
+// });
 
 app
   .route("/login")
