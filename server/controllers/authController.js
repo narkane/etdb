@@ -18,13 +18,13 @@ const register = async (req, res) => {
       username: user.username,
       password: req.body.password
     };
-    req.session.save(err => {
-      if (!err) {
+    // req.session.save(err => {
+    //   if (!err) {
         console.log(req.session);
-      } else {
-        console.log(err);
-      }
-    });
+      // } else {
+      //   console.log(err);
+      // }
+    );
     return res.status(201).json(req.body.username);
   }
 };
@@ -108,13 +108,13 @@ const login = async (req, res) => {
           password: req.body.password
         };
         req.session.user = userobj;
-        req.session.save(err => {
-          if (!err) {
+        // req.session.save(err => {
+        //   if (!err) {
             console.log(req.session);
-          } else {
-            console.log(err);
-          }
-        });
+          // } else {
+          //   console.log(err);
+          // }
+        );
         // picture: user.picture,
         // name: user.name,
         // requested: user.amount_requested,
