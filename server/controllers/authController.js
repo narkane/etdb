@@ -100,13 +100,19 @@ const login = async (req, res) => {
           password: req.body.password
         };
         req.session.user = userobj;
-        req.session.save();
+        req.session.save(err => {
+          if (!err) {
+            console.log(req.session);
+          } else {
+            console.log(err);
+          }
+        });
         // picture: user.picture,
         // name: user.name,
         // requested: user.amount_requested,
         // received: user.amount_received
         // };
-        console.log("LOGIN: REQ.SESH: " + JSON.stringify(req.session));
+        // console.log("LOGIN: REQ.SESH: " + JSON.stringify(req.session));
         // console.log("YOU DID IT! LOGIN!");
         // console.log(finduser[0]);
         res.status(200).json(existinguser);
