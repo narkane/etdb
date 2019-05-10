@@ -100,7 +100,7 @@ const login = async (req, res) => {
         // requested: user.amount_requested,
         // received: user.amount_received
         // };
-        console.log("LOGIN: REQ.SESH: " + req.session);
+        console.log("LOGIN: REQ.SESH: " + JSON.stringify(req.session));
         // console.log("YOU DID IT! LOGIN!");
         // console.log(finduser[0]);
         res.status(200).json(existinguser);
