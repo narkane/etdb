@@ -67,7 +67,7 @@ app.get("/", function(req, res) {
 app
   .route("/login")
   .get(sessionChecker, (req, res) => {
-    res.sendFile(__dirname + "/public/login.html");
+    res.status(200);
   })
   .post(ac.login);
 app.get("/logout", ac.logout);

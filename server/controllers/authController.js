@@ -91,11 +91,13 @@ const login = async (req, res) => {
       if (!isAuthenticated) {
         res.status(403).json("Incorrect username or password");
       } else {
+        console.log('add username and pass to session user obj next...')
         // req.session.user = {
         // isAdmin: user.is_admin,
         // id: user.id,
-        req.session.user.username = existinguser.username;
-        req.session.user.password = req.body.password;
+        let userobj={username = existinguser.username,
+        password = req.body.password}
+        req.session.user = userobj;
         // picture: user.picture,
         // name: user.name,
         // requested: user.amount_requested,
