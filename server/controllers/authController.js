@@ -24,10 +24,6 @@ const register = async (req, res) => {
 const edit = async (req, res) => {
   const db = req.app.get("db");
 
-  console.log(req.session);
-
-  // console.log(await db.get_user([req.body.username]));
-
   if (!(await db.get_user([req.body.newName]))[0]) {
     try {
       // check password
@@ -151,13 +147,20 @@ const adminOnly = (req, res) => {
 const removeUser = async (req, res) => {
   const db = req.app.get("db");
 
-  const user = await db.get_user([req.session.username]);
+  const user = await db.get_user([req.body.username]);
   const existinguser = user[0];
+
   if (existinguser) {
-    console.log(existinguser + " | " + req.session.username);
-    db.delete_user([req.session.username]);
-    req.session.destroy();
-    return res.status(200).json("User deleted!");
+    console.log(existinguser + " | " + req.body.username);
+    //auth with sent password
+    const isAuthenticated = bcrypt.compareSync(req.body.password, user.hash);
+    if (!isAuthenticated) {
+      res.status(403).json("Incorrect username or password");
+    } else {
+      db.delete_user([req.body.username]);
+      req.session.destroy();
+      return res.status(200).json("User deleted!");
+    }
   } else {
     console.log(existinguser + " |FAIL| " + req.session.username);
     return res.status(409).json("User doesn't exist? " + req.session.username);
