@@ -157,6 +157,8 @@ const removeUser = async (req, res) => {
   const user = await db.get_user([req.body.username]);
   const existinguser = user[0];
 
+  console.log("find user: " + JSON.stringify(existinguser));
+
   if (existinguser) {
     console.log(existinguser + " | " + req.body.username);
     //auth with sent password
@@ -170,7 +172,7 @@ const removeUser = async (req, res) => {
     }
   } else {
     console.log(existinguser + " |FAIL| " + req.session.username);
-    return res.status(409).json("User doesn't exist? " + req.session.username);
+    return res.status(409).json("User doesn't exist? " + req.body.username);
   }
 };
 
