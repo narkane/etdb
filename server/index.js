@@ -6,6 +6,8 @@ const cookieParser = require("cookie-parser");
 var RedisStore = require("connect-redis")(session);
 var redis = require("redis").createClient();
 var cors = require("cors");
+const bcrypt = require("bcryptjs");
+
 // const ac = require("./controllers/authController");
 require("dotenv").config();
 
