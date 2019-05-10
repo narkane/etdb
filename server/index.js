@@ -64,8 +64,13 @@ app.get("/", function(req, res) {
   res.cookie("name", "express").send("cookie set"); //Sets name = express
 });
 
+app
+  .route("/login")
+  .get(sessionChecker, (req, res) => {
+    res.sendFile(__dirname + "/public/login.html");
+  })
+  .post(ac.login);
 app.get("/logout", ac.logout);
-app.post("/login", ac.login);
 app.post("/register", ac.register);
 app.put("/change_name", ac.edit);
 app.post("/delete", ac.removeUser);
