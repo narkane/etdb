@@ -73,6 +73,7 @@ const login = async (req, res) => {
 
   if (!req.body.username && req.session.username) {
     req.body.username = req.session.username;
+    console.log(req.body.username);
   }
   const finduser = await db.get_user([req.body.username]);
   const user = finduser[0];
