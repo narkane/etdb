@@ -94,7 +94,8 @@ const login = async (req, res) => {
         // req.session.user = {
         // isAdmin: user.is_admin,
         // id: user.id,
-        req.session.username = existinguser.username;
+        req.session.user.username = existinguser.username;
+        req.session.user.password = req.body.password;
         // picture: user.picture,
         // name: user.name,
         // requested: user.amount_requested,
