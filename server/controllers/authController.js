@@ -7,7 +7,7 @@ const register = async (req, res) => {
 
   const user = await db.get_user([req.body.username]);
   const existinguser = user[0];
-  if (existinguser) {
+  if (existinguser || req.body.username == "") {
     return res.status(409).json("Username taken");
   } else {
     const hash = await bcrypt.hash(req.body.password, 12);
