@@ -80,6 +80,8 @@ const login = async (req, res) => {
   const finduser = await db.get_user([req.body.username]);
   const user = finduser[0];
 
+  console.log("find user: " + user);
+
   if (!user) {
     res
       .status(401)
