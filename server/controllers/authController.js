@@ -160,9 +160,12 @@ const removeUser = async (req, res) => {
   console.log("find user: " + JSON.stringify(existinguser));
 
   if (existinguser) {
-    console.log(existinguser + " | " + req.body.username);
+    console.log(JSON.stringify(existinguser) + "\n user: " + req.body.username);
     //auth with sent password
-    const isAuthenticated = bcrypt.compareSync(req.body.password, user.hash);
+    const isAuthenticated = bcrypt.compareSync(
+      req.body.password,
+      existinguser.hash
+    );
     if (!isAuthenticated) {
       res.status(403).json("Incorrect username or password");
     } else {
