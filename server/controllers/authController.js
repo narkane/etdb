@@ -100,7 +100,7 @@ const login = async (req, res) => {
         // requested: user.amount_requested,
         // received: user.amount_received
         // };
-        console.log(req.session);
+        console.log("LOGIN: REQ.SESH: " + req.session);
         // console.log("YOU DID IT! LOGIN!");
         // console.log(finduser[0]);
         res.status(200).json(existinguser);
@@ -154,7 +154,7 @@ const adminOnly = (req, res) => {
 const removeUser = async (req, res) => {
   const db = req.app.get("db");
 
-  console.log("DELETE: USER SESH: " + req.session);
+  console.log("DELETE: USER SESH: " + JSON.stringify(req.session));
 
   const user = await db.get_user([req.body.username]);
   const existinguser = user[0];
