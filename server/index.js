@@ -25,12 +25,13 @@ massive(CONNECTION_STRING).then(db => {
 app.use(cookieParser());
 app.use(
   session({
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     secret: SESSION_SECRET,
     store: new RedisStore({
       host: "localhost",
-      port: 6379
+      port: 6379,
+      client: redis
     })
   })
 );
