@@ -4,6 +4,7 @@ const massive = require("massive");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 var RedisStore = require("connect-redis")(session);
+var redis = require("redis").createClient();
 var cors = require("cors");
 const ac = require("./controllers/authController");
 require("dotenv").config();

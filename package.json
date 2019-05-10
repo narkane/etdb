@@ -20,6 +20,7 @@
     "express": "^4.16.4",
     "express-session": "^1.16.1",
     "massive": "^5.8.0",
+    "redis": "^2.8.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vuetify": "^1.5.13",
