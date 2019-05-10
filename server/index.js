@@ -40,7 +40,7 @@ app.get("/logout", ac.logout);
 app.post("/login", ac.login);
 app.post("/register", ac.register);
 app.put("/change_name", ac.edit);
-app.get("/delete", ac.removeUser);
+app.post("/delete", ac.removeUser);
 
 app.post("/db/join_team", ac.joinDPTeam);
 
