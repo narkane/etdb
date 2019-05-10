@@ -61,26 +61,6 @@ app.use(
 //   res.redirect("/login");
 // });
 
-app.get("/devpool", listDPTeams);
-app.get("/devpool/members", listDPMembers);
-// app.get("/", function(req, res) {
-//   res.cookie("name", "express").send("cookie set"); //Sets name = express
-// });
-
-// .get(sessionChecker, (req, res) => {
-//   res.status(200);
-// })
-app.post("/login", login);
-app.get("/logout", logout);
-app.post("/register", register);
-app.put("/change_name", edit);
-app.post("/delete", removeUser);
-
-app.post("/db/join_team", joinDPTeam);
-
-const PORT = 3004;
-app.listen(PORT, () => console.log(` - Listening on port (${PORT}) - `));
-
 //
 //
 //
@@ -285,3 +265,46 @@ const removeUser = async (req, res) => {
     return res.status(409).json("User doesn't exist? " + req.body.username);
   }
 };
+
+//
+//
+//
+//
+//
+//
+//
+
+//
+//
+//
+//
+//
+//
+//
+
+//
+//
+//
+//
+//
+//
+//
+app.get("/devpool", listDPTeams);
+app.get("/devpool/members", listDPMembers);
+// app.get("/", function(req, res) {
+//   res.cookie("name", "express").send("cookie set"); //Sets name = express
+// });
+
+// .get(sessionChecker, (req, res) => {
+//   res.status(200);
+// })
+app.post("/login", login);
+app.get("/logout", logout);
+app.post("/register", register);
+app.put("/change_name", edit);
+app.post("/delete", removeUser);
+
+app.post("/db/join_team", joinDPTeam);
+
+const PORT = 3004;
+app.listen(PORT, () => console.log(` - Listening on port (${PORT}) - `));
