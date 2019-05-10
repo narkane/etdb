@@ -99,7 +99,7 @@ const login = async (req, res) => {
       console.log(req.session);
       // console.log("YOU DID IT! LOGIN!");
       // console.log(finduser[0]);
-      res.status(200).json(req.session.user);
+      res.status(200).json(existinguser);
     }
   }
 };
