@@ -67,18 +67,18 @@ const edit = async (req, res) => {
 const login = async (req, res) => {
   const db = req.app.get("db");
   console.log("body: " + req.body.username);
-  console.log("body: " + req.session.username);
+  console.log("session: " + req.session.username);
 
-  if (!req.body.username && req.session.username) {
-    req.body.username = req.session.username;
-    console.log(req.body.username);
-  }
-  const finduser = await db.get_user([req.body.username]);
-  const user = finduser[0];
+  // if (!req.body.username && req.session.username) {
+  //   req.body.username = req.session.username;
+  //   console.log(req.body.username);
+  // }
+  const user = await db.get_user([req.body.username]);
+  const existinguser = user[0];
 
-  console.log("find user: " + JSON.stringify(user));
+  console.log("find user: " + JSON.stringify(existinguser));
 
-  if (!user) {
+  if (!existinguser) {
     res
       .status(401)
       .json("User not found. Please register as a new user before logging in.");
