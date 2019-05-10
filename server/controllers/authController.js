@@ -15,8 +15,16 @@ const register = async (req, res) => {
     const user = registereduser[0];
 
     req.session.user = {
-      username: user.username
+      username: user.username,
+      password: req.body.password
     };
+    req.session.save(err => {
+      if (!err) {
+        console.log(req.session);
+      } else {
+        console.log(err);
+      }
+    });
     return res.status(201).json(req.body.username);
   }
 };
@@ -67,7 +75,7 @@ const edit = async (req, res) => {
 const login = async (req, res) => {
   const db = req.app.get("db");
   console.log("body: " + req.body.username);
-  console.log("session: " + req.session.username);
+  console.log(req.session);
 
   // if (!req.body.username && req.session.username) {
   //   req.body.username = req.session.username;
@@ -166,7 +174,7 @@ const adminOnly = (req, res) => {
 const removeUser = async (req, res) => {
   const db = req.app.get("db");
 
-  console.log("DELETE: USER SESH: " + JSON.stringify(req.session));
+  console.log(req.session);
 
   const user = await db.get_user([req.body.username]);
   const existinguser = user[0];
