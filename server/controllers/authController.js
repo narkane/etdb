@@ -20,11 +20,10 @@ const register = async (req, res) => {
     };
     // req.session.save(err => {
     //   if (!err) {
-        console.log(req.session);
-      // } else {
-      //   console.log(err);
-      // }
-    );
+    console.log(req.session);
+    // } else {
+    //   console.log(err);
+    // }
     return res.status(201).json(req.body.username);
   }
 };
@@ -110,11 +109,11 @@ const login = async (req, res) => {
         req.session.user = userobj;
         // req.session.save(err => {
         //   if (!err) {
-            console.log(req.session);
-          // } else {
-          //   console.log(err);
-          // }
-        );
+        console.log(req.session);
+        // } else {
+        //   console.log(err);
+        // }
+
         // picture: user.picture,
         // name: user.name,
         // requested: user.amount_requested,
