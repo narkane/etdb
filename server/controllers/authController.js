@@ -83,23 +83,27 @@ const login = async (req, res) => {
       .status(401)
       .json("User not found. Please register as a new user before logging in.");
   } else {
-    const isAuthenticated = bcrypt.compareSync(req.body.password, user.hash);
-    if (!isAuthenticated) {
-      res.status(403).json("Incorrect username or password");
-    } else {
-      // req.session.user = {
-      // isAdmin: user.is_admin,
-      // id: user.id,
-      req.session.username = user.username;
-      // picture: user.picture,
-      // name: user.name,
-      // requested: user.amount_requested,
-      // received: user.amount_received
-      // };
-      console.log(req.session);
-      // console.log("YOU DID IT! LOGIN!");
-      // console.log(finduser[0]);
-      res.status(200).json(existinguser);
+    try {
+      const isAuthenticated = bcrypt.compareSync(req.body.password, user.hash);
+      if (!isAuthenticated) {
+        res.status(403).json("Incorrect username or password");
+      } else {
+        // req.session.user = {
+        // isAdmin: user.is_admin,
+        // id: user.id,
+        req.session.username = user.username;
+        // picture: user.picture,
+        // name: user.name,
+        // requested: user.amount_requested,
+        // received: user.amount_received
+        // };
+        console.log(req.session);
+        // console.log("YOU DID IT! LOGIN!");
+        // console.log(finduser[0]);
+        res.status(200).json(existinguser);
+      }
+    } catch (e) {
+      console.log("ERROR: " + e);
     }
   }
 };
