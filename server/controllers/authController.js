@@ -80,7 +80,7 @@ const login = async (req, res) => {
   const finduser = await db.get_user([req.body.username]);
   const user = finduser[0];
 
-  console.log("find user: " + user);
+  console.log("find user: " + JSON.stringify(user));
 
   if (!user) {
     res
