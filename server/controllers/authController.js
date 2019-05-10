@@ -84,7 +84,10 @@ const login = async (req, res) => {
       .json("User not found. Please register as a new user before logging in.");
   } else {
     try {
-      const isAuthenticated = bcrypt.compareSync(req.body.password, user.hash);
+      const isAuthenticated = bcrypt.compareSync(
+        req.body.password,
+        existinguser.hash
+      );
       if (!isAuthenticated) {
         res.status(403).json("Incorrect username or password");
       } else {
