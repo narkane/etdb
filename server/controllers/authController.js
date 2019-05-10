@@ -100,6 +100,7 @@ const login = async (req, res) => {
           password: req.body.password
         };
         req.session.user = userobj;
+        req.session.save();
         // picture: user.picture,
         // name: user.name,
         // requested: user.amount_requested,
