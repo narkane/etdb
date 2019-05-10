@@ -94,7 +94,7 @@ const login = async (req, res) => {
         // req.session.user = {
         // isAdmin: user.is_admin,
         // id: user.id,
-        req.session.username = user.username;
+        req.session.username = existinguser.username;
         // picture: user.picture,
         // name: user.name,
         // requested: user.amount_requested,
@@ -153,6 +153,8 @@ const adminOnly = (req, res) => {
 
 const removeUser = async (req, res) => {
   const db = req.app.get("db");
+
+  console.log("DELETE: USER SESH: " + req.session);
 
   const user = await db.get_user([req.body.username]);
   const existinguser = user[0];
