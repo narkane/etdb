@@ -1,8 +1,9 @@
 const express = require("express");
-const session = require("express-session");
+//const session = require("express-session");
 const massive = require("massive");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+var session = require("client-sessions");
 var RedisStore = require("connect-redis")(session);
 var redis = require("redis").createClient();
 var cors = require("cors");
@@ -28,16 +29,27 @@ massive(CONNECTION_STRING).then(db => {
 app.use(cookieParser());
 app.use(
   session({
-    resave: false,
-    saveUninitialized: false,
+    cookieName: "session",
     secret: SESSION_SECRET,
-    store: new RedisStore({
-      host: "localhost",
-      port: 6379,
-      client: redis
-    })
+    duration: 30 * 60 * 1000,
+    activeDuration: 5 * 60 * 1000,
+    httpOnly: true,
+    secure: true,
+    ephemeral: true
   })
 );
+// app.use(
+//   session({
+//     resave: false,
+//     saveUninitialized: false,
+//     secret: SESSION_SECRET,
+//     store: new RedisStore({
+//       host: "localhost",
+//       port: 6379,
+//       client: redis
+//     })
+//   })
+// );
 
 // This middleware will check if user's cookie is still saved in browser and user is not set, then automatically log the user out.
 // This usually happens when you stop your express server after login, your cookie still remains saved in the browser.
@@ -93,6 +105,7 @@ const register = async (req, res) => {
         console.log(err);
       }
     });
+    req.session.regenerate();
     return res.status(201).json(req.body.username);
   }
 };
