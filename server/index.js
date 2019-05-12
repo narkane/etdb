@@ -1,9 +1,9 @@
-const express = require("express");
+//const express = require("express");
 //const session = require("express-session");
 const massive = require("massive");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-var session = require("client-sessions");
+//var session = require("client-sessions");
 // var RedisStore = require("connect-redis")(session);
 var redis = require("redis").createClient();
 var cors = require("cors");
@@ -12,10 +12,12 @@ const bcrypt = require("bcryptjs");
 // const ac = require("./controllers/authController");
 require("dotenv").config();
 
+var express = require("express"),
+  app = express(),
+  session = require("express-session");
+
 const CONNECTION_STRING = process.env.CONNECTION_STRING;
 const SESSION_SECRET = process.env.SESSION_SECRET;
-
-const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -34,6 +36,7 @@ app.use(
   })
 );
 app.use(cookieParser());
+
 // app.use(
 //   session({
 //     cookieName: "doggie",
