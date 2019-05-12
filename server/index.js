@@ -29,17 +29,24 @@ massive(CONNECTION_STRING).then(db => {
 app.use(cookieParser());
 app.use(
   session({
-    cookieName: "doggie",
-    secret: SESSION_SECRET,
-    duration: 30 * 60 * 1000,
-    activeDuration: 5 * 60 * 1000,
-    httpOnly: true,
-    ephemeral: true,
-    cookie: {
-      secure: false
-    }
+    secret: "2C44-4D44-WppQ38S",
+    resave: true,
+    saveUninitialized: true
   })
 );
+// app.use(
+//   session({
+//     cookieName: "doggie",
+//     secret: SESSION_SECRET,
+//     duration: 30 * 60 * 1000,
+//     activeDuration: 5 * 60 * 1000,
+//     httpOnly: true,
+//     ephemeral: true,
+//     cookie: {
+//       secure: false
+//     }
+//   })
+// );
 // app.use(
 //   session({
 //     resave: false,
