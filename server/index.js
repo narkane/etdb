@@ -120,8 +120,8 @@ const register = async (req, res) => {
       }
     });
     // req.session.regenerate();
-    res.status(201).json(req.body.username);
-    res.send("register SUCCEEDED!");
+    //    res.status(201).json(req.body.username);
+    res.sendStatus(201);
   }
 };
 
@@ -220,8 +220,8 @@ const login = async (req, res) => {
         // console.log("LOGIN: REQ.SESH: " + JSON.stringify(req.session));
         // console.log("YOU DID IT! LOGIN!");
         // console.log(finduser[0]);
-        res.status(200).json(existinguser);
-        res.send("login SUCCESS!");
+        //        res.status(200).json(existinguser);
+        res.sendStatus(200);
       }
     } catch (e) {
       console.log("ERROR: " + e);
