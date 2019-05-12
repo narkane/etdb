@@ -29,12 +29,12 @@ massive(CONNECTION_STRING).then(db => {
 app.use(cookieParser());
 app.use(
   session({
-    cookieName: "session",
+    cookieName: "doggie",
     secret: SESSION_SECRET,
     duration: 30 * 60 * 1000,
     activeDuration: 5 * 60 * 1000,
     httpOnly: true,
-    secure: true,
+    secure: false,
     ephemeral: true
   })
 );
@@ -105,8 +105,9 @@ const register = async (req, res) => {
         console.log(err);
       }
     });
-    req.session.regenerate();
-    return res.status(201).json(req.body.username);
+    // req.session.regenerate();
+    res.status(201).json(req.body.username);
+    res.send("register SUCCEEDED!");
   }
 };
 
@@ -206,6 +207,7 @@ const login = async (req, res) => {
         // console.log("YOU DID IT! LOGIN!");
         // console.log(finduser[0]);
         res.status(200).json(existinguser);
+        res.send("login SUCCESS!");
       }
     } catch (e) {
       console.log("ERROR: " + e);
