@@ -19,21 +19,21 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
-app.use(express.static(`${__dirname}/../build`));
+// app.use(express.static(`${__dirname}/../build`));
 
 massive(CONNECTION_STRING).then(db => {
   app.set("db", db);
   console.log("db connected");
 });
 
-app.use(cookieParser());
 app.use(
   session({
-    secret: "2C44-4D44-WppQ38S",
+    secret: SESSION_SECRET,
     resave: true,
     saveUninitialized: true
   })
 );
+app.use(cookieParser());
 // app.use(
 //   session({
 //     cookieName: "doggie",
