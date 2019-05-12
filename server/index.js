@@ -94,6 +94,8 @@ app.use(
 const register = async (req, res) => {
   const db = req.app.get("db");
 
+  console.log(req.session);
+
   const user = await db.get_user([req.body.username]);
   const existinguser = user[0];
   if (existinguser || req.body.username == "") {
