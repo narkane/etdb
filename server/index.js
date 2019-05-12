@@ -34,8 +34,10 @@ app.use(
     duration: 30 * 60 * 1000,
     activeDuration: 5 * 60 * 1000,
     httpOnly: true,
-    secure: false,
-    ephemeral: true
+    ephemeral: true,
+    cookie: {
+      secure: false
+    }
   })
 );
 // app.use(
