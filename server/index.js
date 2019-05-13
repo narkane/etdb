@@ -2,7 +2,7 @@
 //const session = require("express-session");
 const massive = require("massive");
 const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
+// const cookieParser = require("cookie-parser");
 //var session = require("client-sessions");
 // var RedisStore = require("connect-redis")(session);
 var redis = require("redis").createClient();
@@ -31,14 +31,17 @@ massive(CONNECTION_STRING).then(db => {
 app.use(
   session({
     secret: SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
     cookie: {
-      secure: false
+      path: "/register",
+      domain: "sdc.thummel.site",
+      secure: "auto",
+      maxAge: 60000
     }
   })
 );
-app.use(cookieParser());
+// app.use(cookieParser());
 
 // app.use(
 //   session({
