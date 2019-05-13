@@ -34,7 +34,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      path: "/register",
+      path: "/",
       domain: "sdc.thummel.site",
       secure: "auto",
       maxAge: 60000
