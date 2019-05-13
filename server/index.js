@@ -1,16 +1,18 @@
-//const express = require("express");
-//const session = require("express-session");
 const massive = require("massive");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-//var session = require("client-sessions");
-// var RedisStore = require("connect-redis")(session);
-// var redis = require("redis").createClient();
 var cors = require("cors");
 const bcrypt = require("bcryptjs");
 
-// const ac = require("./controllers/authController");
 require("dotenv").config();
+
+// const ac = require("./controllers/authController");
+
+//const express = require("express");
+//const session = require("express-session");
+//var session = require("client-sessions");
+// var RedisStore = require("connect-redis")(session);
+// var redis = require("redis").createClient();
 
 var express = require("express"),
   app = express(),
@@ -38,7 +40,7 @@ app.use(cookieParser());
 var MemoryStore = session.MemoryStore;
 app.use(
   session({
-    name: "sdc.sid",
+    name: "user_sid",
     secret: SESSION_SECRET,
     resave: true,
     store: new MemoryStore(),
@@ -51,34 +53,6 @@ app.use(
     }
   })
 );
-
-// app.use(cookieParser());
-
-// app.use(
-//   session({
-//     cookieName: "doggie",
-//     secret: SESSION_SECRET,
-//     duration: 30 * 60 * 1000,
-//     activeDuration: 5 * 60 * 1000,
-//     httpOnly: true,
-//     ephemeral: true,
-//     cookie: {
-//       secure: false
-//     }
-//   })
-// );
-// app.use(
-//   session({
-//     resave: false,
-//     saveUninitialized: false,
-//     secret: SESSION_SECRET,
-//     store: new RedisStore({
-//       host: "localhost",
-//       port: 6379,
-//       client: redis
-//     })
-//   })
-// );
 
 // This middleware will check if user's cookie is still saved in browser and user is not set, then automatically log the user out.
 // This usually happens when you stop your express server after login, your cookie still remains saved in the browser.
@@ -136,9 +110,9 @@ const register = async (req, res) => {
         console.log(err);
       }
     });
-    // req.session.regenerate();
-    //    res.status(201).json(req.body.username);
-    res.sendStatus(201);
+
+    return res.status(201).json(req.body.username);
+    // res.sendStatus(201);
   }
 };
 
@@ -177,11 +151,6 @@ const edit = async (req, res) => {
     }
   } else {
     return res.status(409).json("OMG that name EXISTS... DUH-amn");
-    // const hash = await bcrypt.hash(req.body.password, 12);
-    // let registereduser = await db.register_user([req.body.username, hash]);
-    // const user = registereduser[0];
-    // req.session.user = {
-    //   username: user.username
   }
 };
 
@@ -190,14 +159,15 @@ const login = async (req, res) => {
   console.log("body: " + req.body.username);
   console.log(req.session);
 
-  // if (!req.body.username && req.session.username) {
-  //   req.body.username = req.session.username;
-  //   console.log(req.body.username);
-  // }
+  if (!req.body.username && req.session.username) {
+    req.body.username = req.session.username;
+    console.log(req.body.username);
+  }
+
   const user = await db.get_user([req.body.username]);
   const existinguser = user[0];
 
-  console.log("find user: " + JSON.stringify(existinguser));
+  // console.log("find user: " + JSON.stringify(existinguser));
 
   if (!existinguser) {
     res
@@ -216,11 +186,10 @@ const login = async (req, res) => {
         // req.session.user = {
         // isAdmin: user.is_admin,
         // id: user.id,
-        let userobj = {
+        req.session.user = {
           username: existinguser.username,
           password: req.body.password
         };
-        req.session.user = userobj;
         req.session.save(err => {
           if (!err) {
             console.log(req.session);
@@ -237,8 +206,8 @@ const login = async (req, res) => {
         // console.log("LOGIN: REQ.SESH: " + JSON.stringify(req.session));
         // console.log("YOU DID IT! LOGIN!");
         // console.log(finduser[0]);
-        //        res.status(200).json(existinguser);
-        res.sendStatus(200);
+        return res.status(200).json(existinguser);
+        // return res.sendStatus(200);
       }
     } catch (e) {
       console.log("ERROR: " + e);
@@ -267,23 +236,24 @@ const listDPMembers = async (req, res) => {
 
   const findDPusers = await db.list_devpool_members();
   console.log(findDPusers);
-  res.status(200).json(findDPusers);
+  return res.status(200).json(findDPusers);
 };
+
 const listDPTeams = async (req, res) => {
   const db = req.app.get("db");
 
   const findDPusers = await db.list_devpool_teams();
   console.log(findDPusers);
-  res.status(200).json(findDPusers);
+  return res.status(200).json(findDPusers);
 };
 
 const logout = (req, res) => {
   req.session.destroy();
-  res.status(200).json("YOU GONE!!");
+  return res.status(200).json("YOU GONE!!");
 };
 
 const adminOnly = (req, res) => {
-  res.status(200).json(req.session);
+  return res.status(200).json(req.session);
 };
 
 const removeUser = async (req, res) => {
@@ -294,7 +264,7 @@ const removeUser = async (req, res) => {
   const user = await db.get_user([req.body.username]);
   const existinguser = user[0];
 
-  console.log("find user: " + JSON.stringify(existinguser));
+  // console.log("find user: " + JSON.stringify(existinguser));
 
   if (existinguser) {
     console.log(JSON.stringify(existinguser) + "\n user: " + req.body.username);
@@ -348,6 +318,7 @@ app.get("/devpool/members", listDPMembers);
 // .get(sessionChecker, (req, res) => {
 //   res.status(200);
 // })
+
 app.post("/login", login);
 app.get("/logout", logout);
 app.post("/register", register);
