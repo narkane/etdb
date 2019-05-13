@@ -114,7 +114,7 @@ const register = async (req, res) => {
     let registereduser = await db.register_user([req.body.username, hash]);
     const user = registereduser[0];
 
-    req.session.user = {
+    req.session.cookie.user = {
       username: user.username,
       password: req.body.password
     };
@@ -209,7 +209,7 @@ const login = async (req, res) => {
           username: existinguser.username,
           password: req.body.password
         };
-        req.session.user = userobj;
+        req.session.cookie.user = userobj;
         req.session.save(err => {
           if (!err) {
             console.log(req.session);
