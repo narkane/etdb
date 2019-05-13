@@ -2,10 +2,10 @@
 //const session = require("express-session");
 const massive = require("massive");
 const bodyParser = require("body-parser");
-// const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 //var session = require("client-sessions");
 // var RedisStore = require("connect-redis")(session);
-var redis = require("redis").createClient();
+// var redis = require("redis").createClient();
 var cors = require("cors");
 const bcrypt = require("bcryptjs");
 
@@ -20,7 +20,13 @@ const CONNECTION_STRING = process.env.CONNECTION_STRING;
 const SESSION_SECRET = process.env.SESSION_SECRET;
 
 app.use(bodyParser.json());
-app.use(cors());
+app.use(
+  cors({
+    // origin:['http://localhost:80'],
+    // methods: ["GET", "POST", "PUT"],
+    // credentials: true // enable set cookie
+  })
+);
 // app.use(express.static(`${__dirname}/../build`));
 
 massive(CONNECTION_STRING).then(db => {
@@ -28,11 +34,15 @@ massive(CONNECTION_STRING).then(db => {
   console.log("db connected");
 });
 
+app.use(cookieParser());
+var MemoryStore = session.MemoryStore;
 app.use(
   session({
+    name: "sdc.sid",
     secret: SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    store: new MemoryStore(),
+    saveUninitialized: true,
     cookie: {
       path: "/",
       domain: "sdc.thummel.site",
@@ -41,6 +51,7 @@ app.use(
     }
   })
 );
+
 // app.use(cookieParser());
 
 // app.use(
