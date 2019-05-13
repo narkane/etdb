@@ -5,6 +5,8 @@ var ssn;
 const register = async (req, res) => {
   const db = req.app.get("db");
 
+  console.log(req.session);
+
   const user = await db.get_user([req.body.username]);
   const existinguser = user[0];
   if (existinguser || req.body.username == "") {
@@ -18,13 +20,16 @@ const register = async (req, res) => {
       username: user.username,
       password: req.body.password
     };
-    // req.session.save(err => {
-    //   if (!err) {
-    console.log(req.session);
-    // } else {
-    //   console.log(err);
-    // }
+    req.session.save(err => {
+      if (!err) {
+        console.log(req.session);
+      } else {
+        console.log(err);
+      }
+    });
+
     return res.status(201).json(req.body.username);
+    // res.sendStatus(201);
   }
 };
 
@@ -63,11 +68,6 @@ const edit = async (req, res) => {
     }
   } else {
     return res.status(409).json("OMG that name EXISTS... DUH-amn");
-    // const hash = await bcrypt.hash(req.body.password, 12);
-    // let registereduser = await db.register_user([req.body.username, hash]);
-    // const user = registereduser[0];
-    // req.session.user = {
-    //   username: user.username
   }
 };
 
@@ -76,14 +76,15 @@ const login = async (req, res) => {
   console.log("body: " + req.body.username);
   console.log(req.session);
 
-  // if (!req.body.username && req.session.username) {
-  //   req.body.username = req.session.username;
-  //   console.log(req.body.username);
-  // }
+  if (!req.body.username && req.session.username) {
+    req.body.username = req.session.username;
+    console.log(req.body.username);
+  }
+
   const user = await db.get_user([req.body.username]);
   const existinguser = user[0];
 
-  console.log("find user: " + JSON.stringify(existinguser));
+  // console.log("find user: " + JSON.stringify(existinguser));
 
   if (!existinguser) {
     res
@@ -102,27 +103,20 @@ const login = async (req, res) => {
         // req.session.user = {
         // isAdmin: user.is_admin,
         // id: user.id,
-        let userobj = {
+        req.session.user = {
           username: existinguser.username,
           password: req.body.password
         };
-        req.session.user = userobj;
-        // req.session.save(err => {
-        //   if (!err) {
-        console.log(req.session);
-        // } else {
-        //   console.log(err);
-        // }
+        req.session.save(err => {
+          if (!err) {
+            console.log(req.session);
+          } else {
+            console.log(err);
+          }
+        });
 
-        // picture: user.picture,
-        // name: user.name,
-        // requested: user.amount_requested,
-        // received: user.amount_received
-        // };
-        // console.log("LOGIN: REQ.SESH: " + JSON.stringify(req.session));
-        // console.log("YOU DID IT! LOGIN!");
-        // console.log(finduser[0]);
-        res.status(200).json(existinguser);
+        return res.status(200).json(existinguser);
+        // return res.sendStatus(200);
       }
     } catch (e) {
       console.log("ERROR: " + e);
@@ -151,23 +145,24 @@ const listDPMembers = async (req, res) => {
 
   const findDPusers = await db.list_devpool_members();
   console.log(findDPusers);
-  res.status(200).json(findDPusers);
+  return res.status(200).json(findDPusers);
 };
+
 const listDPTeams = async (req, res) => {
   const db = req.app.get("db");
 
   const findDPusers = await db.list_devpool_teams();
   console.log(findDPusers);
-  res.status(200).json(findDPusers);
+  return res.status(200).json(findDPusers);
 };
 
 const logout = (req, res) => {
   req.session.destroy();
-  res.status(200).json("YOU GONE!!");
+  return res.status(200).json("YOU GONE!!");
 };
 
 const adminOnly = (req, res) => {
-  res.status(200).json(req.session);
+  return res.status(200).json(req.session);
 };
 
 const removeUser = async (req, res) => {
@@ -178,7 +173,7 @@ const removeUser = async (req, res) => {
   const user = await db.get_user([req.body.username]);
   const existinguser = user[0];
 
-  console.log("find user: " + JSON.stringify(existinguser));
+  // console.log("find user: " + JSON.stringify(existinguser));
 
   if (existinguser) {
     console.log(JSON.stringify(existinguser) + "\n user: " + req.body.username);
